@@ -1,0 +1,33 @@
+body{
+    background-color: black;
+    color: white;
+}
+.menu, h1{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 54px;
+    margin: 30px;
+    
+}
+.info{
+    border: solid 3px white;
+    border-radius: 20px 0 0 20px;
+}
+.add{
+    border: solid 4px green;
+    border-radius: 0 20px 20px 0;
+    background-color: green;
+}
+.tablica{
+    border: solid 2px white;
+    width: 70%;
+    margin: 0 auto;
+    padding: 15px;
+    border-radius: 20px;
+}
+a{
+    display: flex;
+    align-items: center;
+    color: rgb(173, 0, 0);
+}

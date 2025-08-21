@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lista Zakupów</title>
+    <link rel="stylesheet" href="styles/index_styles.css" />
+  </head>
+  <body>
+    <h1>Lista Zakupów</h1>
+    <div class="menu">
+        <input type="text" id="info" class="info" placeholder="Wpisz produkt"/>
+        <button id="add" class="add">Dodaj</button>
+    </div>
+    <div class="tablica" id="tablica"></div>
+
+    <script>
+      const info = document.getElementById("info");
+      const add = document.getElementById("add");
+      const tablica = document.getElementById("tablica");
+
+      
+      let shoppingList = JSON.parse(localStorage.getItem('shoppingList')) || [];
+
+    
+      function displayList() {
+        tablica.innerHTML = '';
+        shoppingList.forEach(item => {
+          const box = document.createElement("div");
+          box.style.cssText = `
+            display: flex;
+            justify-content: space-around;
+            margin: 0 auto;
+          `;
+          const przycisk = document.createElement("input");
+          przycisk.type = "checkbox";
+          przycisk.checked = item.purchased;
+          const nazwa = document.createElement("p");
+          nazwa.innerHTML = item.name;
+          nazwa.style.cssText = `
+            font-size: 24px;
+            text-decoration: ${item.purchased ? 'line-through' : 'none'};
+          `;
+          const usun = document.createElement("a");
+          usun.className = "usun";
+          usun.textContent = "Usuń";
+          usun.style.cssText = `
+            display: flex;
+            text-align: center;
+            color: rgb(173, 0, 0);
+          `;
+
+         
+          function deleteItem() {
+            shoppingList = shoppingList.filter(el => el.id !== item.id);
+            localStorage.setItem('shoppingList', JSON.stringify(shoppingList));
+            box.remove();
+          }
+
+  
+          przycisk.addEventListener("change", () => {
+            item.purchased = przycisk.checked;
+            nazwa.style.textDecoration = item.purchased ? 'line-through' : 'none';
+            localStorage.setItem('shoppingList', JSON.stringify(shoppingList));
+          });
+
+          usun.addEventListener("click", deleteItem);
+
+          box.appendChild(przycisk);
+          box.appendChild(nazwa);
+          box.appendChild(usun);
+          tablica.appendChild(box);
+        });
+      }
+
+ 
+      function addprodukt() {
+        const wartosc = info.value;
+        if (wartosc === "") {
+          alert("Wprowadź nazwę produktu");
+        } else {
+          shoppingList.push({ id: Date.now(), name: wartosc, purchased: false });
+          localStorage.setItem('shoppingList', JSON.stringify(shoppingList));
+          displayList();
+          info.value = "";
+        }
+      }
+
+      
+      displayList();
+
+      add.addEventListener("click", addprodukt);
+    </script>
+  </body>
+</html>
